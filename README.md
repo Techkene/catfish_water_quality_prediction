@@ -4,7 +4,7 @@ This project implements a Machine Learning solution to classify water quality ba
 
 ---
 
-## 📌 Project Overview
+##  Project Overview
 
 * **Goal:** Predict the quality class of water samples (e.g., 0, 1, 2) based on input features like pH, Turbidity, Dissolved Oxygen, etc.
 * **Dataset:** `WQD.xlsx - Final_Data.csv`
@@ -14,7 +14,7 @@ This project implements a Machine Learning solution to classify water quality ba
 ---
 
 ## 📂 Project Structure
-### 📂 Project Structure
+### Project Structure
 
 ```text
 .
@@ -29,14 +29,14 @@ This project implements a Machine Learning solution to classify water quality ba
 ```
 ---
 
-## ⚙️ Prerequisites
+##  Prerequisites
 
 * **Docker Desktop** (Running)
 * **Python 3.9+** (Optional, for local development without Docker)
 
 ---
 
-## 🚀 Quick Start (Docker)
+## Quick Start (Docker)
 
 The easiest way to run this `application` is using `Docker`.
 
@@ -82,6 +82,10 @@ Using cURL (`Windows PowerShell`):
 ```bash
 curl -X POST http://localhost:5000/predict -H "Content-Type: application/json" -d '{"Temp": 67.4, "Turbidity (cm)": 10.1, "DO(mg/L)": 0.2, "BOD (mg/L)": 7.4, "CO2": 10.1, "pH": 4.7, "Alkalinity (mg L-1 )": 218.3, "Hardness (mg L-1 )": 300.1, "Calcium (mg L-1 )": 337.1, "Ammonia (mg L-1 )": 0.2, "Nitrite (mg L-1 )": 4.3, "Phosphorus (mg L-1 )": 0.005, "H2S (mg L-1 )": 0.06, "Plankton (No. L-1)": 6069.6}'
 ```
+
+---
+
+
 ## Model Development Details
 The water_quality_model.ipynb notebook covers the training process:
 
@@ -96,6 +100,8 @@ The water_quality_model.ipynb notebook covers the training process:
 - **Tuning**: Utilized `GridSearchCV` to optimize Random Forest hyperparameters.
 
 - **Export**: Serialized the best model and scalers using joblib.
+
+---
 
 ## Troubleshooting
 
