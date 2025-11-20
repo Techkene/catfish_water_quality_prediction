@@ -1,20 +1,20 @@
-# Water Quality Prediction API
+# 🐟 Water Quality Prediction API
 
-This project implements a Machine Learning solution to classify water quality based on physicochemical properties. It includes a full pipeline from Exploratory Data Analysis (EDA) and model training to a containerized REST API deployed with Docker.
+A machine learning–powered REST API for predicting **water quality classes** using physicochemical parameters.
+This project includes the **full pipeline**: data exploration, model training, serialization, and a fully containerized Flask API deployed using Docker and Render.
 
 ---
 
-##  Project Overview
+## Project Overview
 
-* **Goal:** Predict the quality class of water samples (e.g., 0, 1, 2) based on input features like pH, Turbidity, Dissolved Oxygen, etc.
+* **Objective:** Predict water quality class (0, 1, or 2) from water physicochemical properties such as pH, turbidity, dissolved oxygen, etc.
 * **Dataset:** `WQD.xlsx - Final_Data.csv`
-* **Model:** Random Forest Classifier (Hyperparameter tuned via GridSearch)
-* **Deployment:** Flask API containerized with Docker.
+* **Model:** Random Forest Classifier (optimized using GridSearchCV)
+* **Deployment:** Flask API + Docker + Render cloud hosting
 
 ---
 
-## 📂 Project Structure
-### Project Structure
+## 📁 Project Structure
 
 ```text
 .
@@ -27,86 +27,188 @@ This project implements a Machine Learning solution to classify water quality ba
 ├── scaler.pkl
 └── model_columns.pkl
 ```
----
-
-##  Prerequisites
-
-* **Docker Desktop** (Running)
-* **Python 3.9+** (Optional, for local development without Docker)
 
 ---
 
-## Quick Start (Docker)
+## Prerequisites
 
-The easiest way to run this `application` is using `Docker`.
+* **Docker Desktop** (required to run the API container)
+* **Python 3.9+** (optional if running locally without Docker)
+
+---
+
+## Quick Start with Docker
+
+Running this API is easiest using Docker.
 
 ### 1. Build the Docker Image
-
-Open your terminal in the project directory and run:
 
 ```bash
 docker build -t water-quality-api .
 ```
+
 ### 2. Run the Container
-Start the API on port 5000:
+
+Expose API on port **5000**:
 
 ```bash
 docker run -p 5000:5000 -d --name water-api water-quality-api
 ```
-### 3. Test the API
 
-Send a POST request to the prediction endpoint.
+### 3. Test the API (Local)
 
-Using cURL (`Bash/Mac/Linux`):
+**Using cURL (Mac/Linux):**
+
 ```bash
 curl -X POST http://localhost:5000/predict \
 -H "Content-Type: application/json" \
 -d '{
-    "Temp": 67.4,
-    "Turbidity (cm)": 10.1,
-    "DO(mg/L)": 0.2,
-    "BOD (mg/L)": 7.4,
-    "CO2": 10.1,
-    "pH": 4.7,
-    "Alkalinity (mg L-1 )": 218.3,
-    "Hardness (mg L-1 )": 300.1,
-    "Calcium (mg L-1 )": 337.1,
-    "Ammonia (mg L-1 )": 0.2,
-    "Nitrite (mg L-1 )": 4.3,
-    "Phosphorus (mg L-1 )": 0.005,
-    "H2S (mg L-1 )": 0.06,
-    "Plankton (No. L-1)": 6069.6
+  "Temp": 67.4,
+  "Turbidity (cm)": 10.1,
+  "DO(mg/L)": 0.2,
+  "BOD (mg/L)": 7.4,
+  "CO2": 10.1,
+  "pH": 4.7,
+  "Alkalinity (mg L-1 )": 218.3,
+  "Hardness (mg L-1 )": 300.1,
+  "Calcium (mg L-1 )": 337.1,
+  "Ammonia (mg L-1 )": 0.2,
+  "Nitrite (mg L-1 )": 4.3,
+  "Phosphorus (mg L-1 )": 0.005,
+  "H2S (mg L-1 )": 0.06,
+  "Plankton (No. L-1)": 6069.6
 }'
 ```
-Using cURL (`Windows PowerShell`):
+
+**Using PowerShell (Windows):**
+
 ```bash
-curl -X POST http://localhost:5000/predict -H "Content-Type: application/json" -d '{"Temp": 67.4, "Turbidity (cm)": 10.1, "DO(mg/L)": 0.2, "BOD (mg/L)": 7.4, "CO2": 10.1, "pH": 4.7, "Alkalinity (mg L-1 )": 218.3, "Hardness (mg L-1 )": 300.1, "Calcium (mg L-1 )": 337.1, "Ammonia (mg L-1 )": 0.2, "Nitrite (mg L-1 )": 4.3, "Phosphorus (mg L-1 )": 0.005, "H2S (mg L-1 )": 0.06, "Plankton (No. L-1)": 6069.6}'
+curl -X POST http://localhost:5000/predict -H "Content-Type: application/json" -d "{\"Temp\": 67.4, \"Turbidity (cm)\": 10.1, \"DO(mg/L)\": 0.2, \"BOD (mg/L)\": 7.4, \"CO2\": 10.1, \"pH\": 4.7, \"Alkalinity (mg L-1 )\": 218.3, \"Hardness (mg L-1 )\": 300.1, \"Calcium (mg L-1 )\": 337.1, \"Ammonia (mg L-1 )\": 0.2, \"Nitrite (mg L-1 )\": 4.3, \"Phosphorus (mg L-1 )\": 0.005, \"H2S (mg L-1 )\": 0.06, \"Plankton (No. L-1)\": 6069.6}"
 ```
 
 ---
 
+## Cloud Deployment (Render)
 
-## Model Development Details
-The water_quality_model.ipynb notebook covers the training process:
-
-- **Data Cleaning**: Renamed columns (e.g., fixed pH typo), handled missing values with Median Imputation.
-
-- **EDA**: Analyzed correlations and distributions.
-
-- **Preprocessing**: Applied Standard Scaling to normalize features.
-
-- **Model Selection**: Compared `Logistic Regression`, `Random Forest`, and `Gradient Boosting`.
-
-- **Tuning**: Utilized `GridSearchCV` to optimize Random Forest hyperparameters.
-
-- **Export**: Serialized the best model and scalers using joblib.
+This API is deployed on **Render.com** and publicly accessible.
 
 ---
 
-## Troubleshooting
+### 1. Push Your Project to GitHub
 
-### Docker Build Fails on Network:
-If the build fails due to "ReadTimeout" or "Hash Mismatch", simply run the `docker build` command again. The `Dockerfile` is optimized to cache progress, so it will resume where it left off.
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin <your_repo_url>
+git push -u origin main
+```
 
-### File Not Found (`Dockerfile`):
-Ensure your `Dockerfile` is named exactly `Dockerfile` with no file extension (e.g., it should not be `Dockerfile.txt`).
+---
+
+### 2. Deploy via Render Dashboard
+
+1. Visit **Render.com**
+2. Click **New + → Web Service**
+3. Connect your GitHub repo
+4. **Runtime:** Docker
+5. **Instance Type:** Free (or upgrade for performance)
+6. Click **Create Web Service**
+
+Render will automatically build and deploy your Dockerized API.
+
+---
+
+### 3. Test the Live API
+
+```bash
+curl -X POST https://catfish-water-quality-prediction.onrender.com/predict \
+-H "Content-Type: application/json" \
+-d '{"Temp": 67.4, "Turbidity (cm)": 10.1, "DO(mg/L)": 0.2, "BOD (mg/L)": 7.4, "CO2": 10.1, "pH": 4.7, "Alkalinity (mg L-1 )": 218.3, "Hardness (mg L-1 )": 300.1, "Calcium (mg L-1 )": 337.1, "Ammonia (mg L-1 )": 0.2, "Nitrite (mg L-1 )": 4.3, "Phosphorus (mg L-1 )": 0.005, "H2S (mg L-1 )": 0.06, "Plankton (No. L-1)": 6069.6}'
+```
+
+---
+
+## Model Development Summary
+
+The notebook (`water_quality_model.ipynb`) documents the complete workflow:
+
+### 🔧 Data Preparation
+
+* Cleaned and renamed inconsistent columns
+* Used **Median Imputation** for missing values
+
+### 📊 Exploratory Data Analysis
+
+* Distribution inspection
+* Correlation heatmaps
+* Outlier checks
+
+### 🏗️ Preprocessing
+
+* StandardScaler applied to numeric features
+* Stored `model_columns.pkl` for strict feature order
+
+### 🤖 Model Training
+
+Models evaluated:
+
+* Logistic Regression
+* Gradient Boosting
+* **Random Forest (best performance)**
+
+### 🔍 Hyperparameter Tuning
+
+Used **GridSearchCV** to optimize:
+
+* n_estimators
+* max_depth
+* min_samples_split
+
+### 🗂️ Serialization
+
+Exported:
+
+* `water_quality_model.pkl`
+* `scaler.pkl`
+* `model_columns.pkl`
+
+---
+
+##  Troubleshooting
+
+### ❗ Docker Build Network Errors
+
+If you see:
+
+* `ReadTimeout`
+* `Hash mismatch`
+* `Connection reset`
+
+Simply rerun:
+
+```bash
+docker build -t water-quality-api .
+```
+
+Docker caching will resume the build from the last successful layer.
+
+---
+
+### ❗ “Dockerfile Not Found”
+
+Ensure the file is named exactly:
+
+```
+Dockerfile
+```
+
+**Not**:
+
+```
+Dockerfile.txt
+Dockerfile.docx
+```
+
+---
